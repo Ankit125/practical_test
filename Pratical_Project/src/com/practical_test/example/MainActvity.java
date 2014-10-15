@@ -36,16 +36,12 @@ import com.server.async.response;
 
 public class MainActvity extends ListActivity {
 
-	// list with the data to show in the listview
-	private LinkedList<String> mListItems;
-
 	private ArrayList<response> list_response;
 	// The data to be displayed in the ListView
 
 	private ProgressBar progressbar;
 	List_Adapter adap;
 	private Integer page = 1;
-//	
 
 	/** Called when the activity is first created. */
 	@Override
@@ -128,9 +124,6 @@ public class MainActvity extends ListActivity {
 			return vi;
 		}
 
-		
-		
-		
 	}
 
 	public void get_data() {
@@ -144,13 +137,6 @@ public class MainActvity extends ListActivity {
 		AsyncPost asyncPost = new AsyncPost(
 				"http://50.2.223.175/androidtest/getchathistory.php", params,
 				new OnResponse() {
-
-					@Override
-					public void onXmlDownloadCompletion(String newsId,
-							String fileName, String threadName) {
-						// TODO Auto-generated method stub
-
-					}
 
 					@Override
 					public void onResponse(String response) {
@@ -171,7 +157,6 @@ public class MainActvity extends ListActivity {
 											.getString("userid");
 									String msg = json_data.getString("msg");
 
-									Log.i("System out", "response :" + id);
 									response res = new response();
 									res.setId(id);
 									res.setDatetime(datetime);
@@ -187,7 +172,10 @@ public class MainActvity extends ListActivity {
 											adap.notifyDataSetChanged();
 											((LoadMoreListView) getListView())
 													.onLoadMoreComplete();
-
+											if (page != 2) {
+												((LoadMoreListView) getListView()).setSelection(adap
+														.getCount() - 1);
+											}
 											progressbar
 													.setVisibility(View.INVISIBLE);
 										}
